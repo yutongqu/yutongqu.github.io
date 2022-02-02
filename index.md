@@ -1,5 +1,11 @@
 ## Welcome
 
+---
+
+I am currently a Bachelor student at the School of Computer Science, The University of Adelaide. I am researching in the text summarization under the supervision of Dr. Wei Emma Zhang and co-supervision of Congbo Ma.
+
+
+
 <!-- to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/yutongqu/yutongqu.github.io/edit/main/index.md) to maintain and preview the content for your website in Markdown files.
