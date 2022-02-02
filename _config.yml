@@ -1,5 +1,10 @@
 theme: jekyll-theme-minimal
 title: Yutong Qu
+
 github:
+  repository_url: false
+  is_user_page: false
   is_project_page: false
+show_downloads: false
+
 # logo: qyt.png
