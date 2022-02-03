@@ -3,7 +3,7 @@ title: Yutong Qu
 email: yutong.qu@outlook.com
 
 description:
-  Email: yutong.qu@outlook.com
+  Email":" yutong.qu@outlook.com
 
 github:
   repository_url: false
@@ -11,5 +11,6 @@ github:
   is_project_page: false
 show_downloads: false
 
+author: false
 host: false
 # logo: qyt.png
