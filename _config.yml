@@ -1,5 +1,6 @@
 theme: jekyll-theme-minimal
 title: Yutong Qu
+logo: qyt.png
 email: yutong.qu@outlook.com
 
 description:
@@ -13,4 +14,4 @@ show_downloads: false
 
 author: false
 host: false
-# logo: qyt.png
+
