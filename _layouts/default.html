@@ -23,8 +23,9 @@
 
         <p>{{ site.description | default: site.github.project_tagline }}</p>
         
+        
         {% if site.email %}
-        <p class="view">Email: <small>{{ site.email }}</small></p>
+        <p class="view"><a href="mailto:{{ site.email_link }}">Email: {{ site.email }}</p>
         {% endif %}
         
         
