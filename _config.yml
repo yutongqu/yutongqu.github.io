@@ -1,3 +1,4 @@
+theme: jekyll-theme-minimal
 title: Yutong Qu
 logo: qyt.png
 email: yutong.qu@outlook.com
@@ -14,9 +15,6 @@ show_downloads: false
 
 author: false
 host: false
+copyright: "2022"
 
-# Build settings
-# theme: jekyll-theme-minimal
-theme: minimal-mistakes-jekyll
-plugins:
-  - jekyll-feed
+
