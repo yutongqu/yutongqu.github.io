@@ -1,14 +1,12 @@
 theme: jekyll-theme-minimal
 title: Yutong Qu
+email: yutong.qu@outlook.com
 
 github:
   repository_url: false
   is_user_page: false
   is_project_page: false
 show_downloads: false
-
-author:
-  email: yutong.qu@adelaide.student.edu.au
 
 
 # logo: qyt.png
