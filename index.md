@@ -17,7 +17,7 @@ I am currently a Bachelor student at the [School of Computer Science](https://ec
 
 ### Awards
 
-- **Exclusive Dean's Recognition of Academic Excellence Award**, The University of Adelaide, 2021
+- **Exclusive Dean's Recognition of Academic Excellence Award**, The University of Adelaide, 2020
 
 
 
