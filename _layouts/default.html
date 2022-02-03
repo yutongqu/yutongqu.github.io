@@ -29,6 +29,11 @@
         <p class="view"><a href="mailto:{{ site.email_link }}">{{ site.email }}</a></p>
         {% endif %}
         
+        {% if site.linkedin %}
+        <nobr><b>LinkedIn: </b></nobr>
+        <p class="view"><a href="{{ site.linkedin }}">Yutong Qu</a></p>
+        {% endif %}
+        
         
         {% if site.github.is_project_page %}
         <p class="view"><a href="{{ site.github.repository_url }}">View the Project on GitHub <small>{{ site.github.repository_nwo }}</small></a></p>
