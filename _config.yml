@@ -3,8 +3,9 @@ title: Yutong Qu
 logo: qyt.png
 email: yutong.qu@outlook.com
 
-description: |
-  Email：yutong.qu@outlook.com
+description: |-
+
+  Email：yutong.qu@outlook.com"
 
 github:
   repository_url: false
@@ -14,6 +15,6 @@ show_downloads: false
 
 author: false
 host: false
-copyright: false
+copyright: "2022"
 
 
