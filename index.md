@@ -10,15 +10,14 @@ I am currently a Bachelor student at the [School of Computer Science](https://ec
 
 ### Education
 
-BSc (Hons), The University of Adelaide, Australia, 2021-2022
-
-BCS in Artificial Intelligence, The University of Adelaide, Australia, 2018-2021
+- BSc (Hons), The University of Adelaide, Australia, 2021-2022
+- BCS in Artificial Intelligence, The University of Adelaide, Australia, 2018-2021
 
 ---
 
 ### Awards
 
-**Exclusive Dean's Recognition of Academic Excellence Award for 2020**, The University of Adelaide, 2021
+- **Exclusive Dean's Recognition of Academic Excellence Award for 2020**, The University of Adelaide, 2021
 
 
 
