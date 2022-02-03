@@ -25,13 +25,15 @@
         
         
         {% if site.email %}
-        <p><b>Email: </b>
-        <p class="view"><a href="mailto:{{ site.email_link }}">{{ site.email }}</a></p>
+        <nobr><b>Email: </b>
+          <p class="view"><a href="mailto:{{ site.email_link }}">{{ site.email }}</a></p>
+        </nobr>
         {% endif %}
         
         {% if site.linkedin %}
-        <p><b>LinkedIn: </b>
-        <p class="view"><a href="{{ site.linkedin }}">Yutong Qu</a></p>
+        <nobr><p><b>LinkedIn: </b>
+          <p class="view"><a href="{{ site.linkedin }}">Yutong Qu</a></p>
+        </nobr>
         {% endif %}
         
         
