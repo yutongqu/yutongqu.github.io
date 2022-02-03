@@ -6,7 +6,7 @@
 
 I am currently a Bachelor student at the [School of Computer Science](https://ecms.adelaide.edu.au/computer-science/), [The University of Adelaide](https://adelaide.edu.au/). I am researching in text summarization under the supervision of [Dr. Wei Emma Zhang](http://weiemmazhang.me/) and co-supervision of Congbo Ma.
 
-##  
+---
 
 ### Education
 
@@ -14,7 +14,7 @@ BSc (Hons), The University of Adelaide, Australia, 2021-2022
 
 BCS in Artificial Intelligence, The University of Adelaide, Australia, 2018-2021
 
-##  
+---
 
 ### Awards
 
