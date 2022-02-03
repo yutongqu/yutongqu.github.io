@@ -25,7 +25,8 @@
         
         
         {% if site.email %}
-        <p class="view"><a href="mailto:{{ site.email_link }}">Email: {{ site.email }}</p>
+        <p nowrap><b>Email: </b></p>
+        <p class="view"><a href="mailto:{{ site.email_link }}">{{ site.email }}</p>
         {% endif %}
         
         
