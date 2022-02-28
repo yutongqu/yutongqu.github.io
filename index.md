@@ -4,14 +4,14 @@
 
 ### About me
 
-I am currently a Bachelor student at the [School of Computer Science](https://ecms.adelaide.edu.au/computer-science/), [The University of Adelaide](https://adelaide.edu.au/). I am researching in text summarization under the supervision of [Dr. Wei Emma Zhang](http://weiemmazhang.me/) and co-supervision of [Congbo Ma](https://dblp.org/pid/204/8300.html).
+I am currently a Bachelor student at the [School of Computer Science](https://ecms.adelaide.edu.au/computer-science/), [Faculty of Engineering, Computer & Mathematical Sciences](https://ecms.adelaide.edu.au/), [The University of Adelaide](https://adelaide.edu.au/). I am researching in text summarization under the supervision of [Dr. Wei Emma Zhang](http://weiemmazhang.me/) and co-supervision of [Congbo Ma](https://dblp.org/pid/204/8300.html).
 
 ---
 
 ### Education
 
-- BCS (Hons), The University of Adelaide, Australia, 2021-2022
-- BCS in Artificial Intelligence, The University of Adelaide, Australia, 2018-2021
+- BCompSc(Hons), The University of Adelaide, Australia, 2021-2022
+- BCompSc, majoring in Artificial Intelligence, The University of Adelaide, Australia, 2018-2021
 
 ---
 
