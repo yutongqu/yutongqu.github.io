@@ -15,6 +15,19 @@ I am currently a Bachelor student at the [School of Computer Science](https://ec
 
 ---
 
+### Publications
+
+**Embedding Knowledge for Document Summarization: A Survey**
+
+**Yutong Qu**, Wei Emma Zhang, Jian Yang, Lingfei Wu, Jia Wu, Xindong Wu
+
+Preprint (arXiv), 2022
+
+[[Paper](https://arxiv.org/abs/2204.11190)]
+
+
+---
+
 ### Awards
 
 - **Exclusive Dean's Recognition of Academic Excellence Award**, The University of Adelaide, 2020
