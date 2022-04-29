@@ -24,7 +24,7 @@
         <p>{{ site.description | default: site.github.project_tagline }}</p>
         
         {% if site.dblp_logo %}
-          <img src="{{site.dblp_logo | site.dblp_link}}" alt="DBLP Logo" width="50" height="50" />
+          <a href="mailto:{{ site.dblp_link }}"><img src="{{site.dblp_logo | site.dblp_link}}" alt="DBLP Logo" width="50" height="50" /></a>
         {% endif %}
 
         
