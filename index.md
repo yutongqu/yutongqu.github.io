@@ -18,11 +18,11 @@ I am currently a Bachelor student at the [School of Computer Science](https://se
 ### Publications
 
 **Embedding Knowledge for Document Summarization: A Survey**  
-**Yutong Qu**, Wei Emma Zhang, Jian Yang, Lingfei Wu, Jia Wu, Xindong Wu  
+*Yutong Qu*, Wei Emma Zhang, Jian Yang, Lingfei Wu, Jia Wu, Xindong Wu  
 arXiv, 2022  [[Paper](https://arxiv.org/abs/2204.11190)]  
 
 **Document-aware Positional Encoding and Linguistic-guided Encoding for Abstractive Multi-document Summarization**  
-Congbo Ma, Wei Emma Zhang, Pitawelayalage Dasun Dileepa Pitawela, **Yutong Qu**, Haojie Zhuang, Hu Wang  
+Congbo Ma, Wei Emma Zhang, Pitawelayalage Dasun Dileepa Pitawela, *Yutong Qu*, Haojie Zhuang, Hu Wang  
 Accepted by IJCNN at IEEE WCCI 2022
 
 ---
