@@ -23,6 +23,10 @@
 
         <p>{{ site.description | default: site.github.project_tagline }}</p>
         
+        {% if site.dblp_logo %}
+          <img src="{{site.dblp_logo | site.dblp.relative_url}}" alt="DBLP Logo" width="50" height="50" />
+        {% endif %}
+
         
         {% if site.email %}
         <div style="white-space:nowrap;">
