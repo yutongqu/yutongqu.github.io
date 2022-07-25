@@ -10,7 +10,7 @@ I am currently a Bachelor student at the [School of Computer Science](https://se
 
 ### Education
 
-- HCOMP, The University of Adelaide, Australia, 2021-2022
+- HCOMP, First Class Honours, The University of Adelaide, Australia, 2021-2022
 - BCOMP, majoring in Artificial Intelligence, The University of Adelaide, Australia, 2018-2021
 
 ---
