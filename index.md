@@ -4,7 +4,7 @@
 
 ### About me
 
-I am currently a Bachelor graduate at the [School of Computer Science](https://set.adelaide.edu.au/computer-science/), [Faculty of Sciences, Engineering and Technology](https://set.adelaide.edu.au/), [The University of Adelaide](https://adelaide.edu.au/). I am researching in document summarization under the supervision of [Dr. Wei Zhang](http://weiemmazhang.me/) and co-supervision of [Congbo Ma](https://dblp.org/pid/204/8300.html).
+I am currently a Bachelor graduate from the [School of Computer Science](https://set.adelaide.edu.au/computer-science/), [Faculty of Sciences, Engineering and Technology](https://set.adelaide.edu.au/), [The University of Adelaide](https://adelaide.edu.au/). I am researching in document summarization under the supervision of [Dr. Wei Zhang](http://weiemmazhang.me/) and co-supervision of [Congbo Ma](https://dblp.org/pid/204/8300.html).
 
 ---
 
