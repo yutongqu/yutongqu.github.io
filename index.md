@@ -23,7 +23,7 @@ arXiv, 2022  [[Paper](https://arxiv.org/abs/2204.11190)]
 
 **Document-aware Positional Encoding and Linguistic-guided Encoding for Abstractive Multi-document Summarization**  
 Congbo Ma, Wei Emma Zhang, Pitawelayalage Dasun Dileepa Pitawela, *Yutong Qu*, Haojie Zhuang, Hu Wang  
-Accepted by IJCNN at IEEE WCCI 2022
+Accepted by IJCNN at IEEE WCCI 2022  [[Paper](https://arxiv.org/abs/2209.05929)]  
 
 ---
 
