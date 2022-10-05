@@ -21,6 +21,10 @@ I am currently a Bachelor graduate from the [School of Computer Science](https:/
 *Yutong Qu*, Wei Emma Zhang, Jian Yang, Lingfei Wu, Jia Wu, Xindong Wu  
 arXiv, 2022  [[Paper](https://arxiv.org/abs/2204.11190)]  
 
+**Knowledge-aware Document Summarization: A Survey of Knowledge, Embedding Methods and Architectures**  
+*Yutong Qu*, Wei Emma Zhang, Jian Yang, Lingfei Wu, Jia Wu
+Knowledge-Based Systems, 2022  [[Paper](https://doi.org/10.1016/j.knosys.2022.109882)]  
+
 **Document-aware Positional Encoding and Linguistic-guided Encoding for Abstractive Multi-document Summarization**  
 Congbo Ma, Wei Emma Zhang, Pitawelayalage Dasun Dileepa Pitawela, *Yutong Qu*, Haojie Zhuang, Hu Wang  
 Accepted by IJCNN at IEEE WCCI 2022  [[Paper](https://arxiv.org/abs/2209.05929)]  
