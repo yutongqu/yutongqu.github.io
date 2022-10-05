@@ -22,7 +22,7 @@ I am currently a Bachelor graduate from the [School of Computer Science](https:/
 arXiv, 2022  [[Paper](https://arxiv.org/abs/2204.11190)]  
 
 **Knowledge-aware Document Summarization: A Survey of Knowledge, Embedding Methods and Architectures**  
-*Yutong Qu*, Wei Emma Zhang, Jian Yang, Lingfei Wu, Jia Wu
+*Yutong Qu*, Wei Emma Zhang, Jian Yang, Lingfei Wu, Jia Wu  
 Knowledge-Based Systems, 2022  [[Paper](https://doi.org/10.1016/j.knosys.2022.109882)]  
 
 **Document-aware Positional Encoding and Linguistic-guided Encoding for Abstractive Multi-document Summarization**  
