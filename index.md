@@ -31,7 +31,7 @@ Accepted by IJCNN at IEEE WCCI 2022  [[Paper](https://arxiv.org/abs/2209.05929)]
 
 **Learning From the Source Document: Unsupervised Abstractive Summarization**  
 Haojie Zhuang, Wei Emma Zhang, Jian Yang, Congbo Ma, *Yutong Qu*, Quan Z. Sheng  
-Accepted by Findings of EMNLP 2022  
+Accepted by EMNLP 2022  
 
 ---
 
