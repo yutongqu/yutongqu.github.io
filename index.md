@@ -11,6 +11,7 @@ I am currently a Ph.D student at the [School of Computer and Mathematical Scienc
 
 ### Education
 
+- PHDCOMPSC, The University of Adelaide, Australia, 2023-Present
 - HCOMP, First Class Honours, The University of Adelaide, Australia, 2021-2022
 - BCOMP, majoring in Artificial Intelligence, The University of Adelaide, Australia, 2018-2021
 
