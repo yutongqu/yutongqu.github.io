@@ -12,6 +12,9 @@
     <![endif]-->
     {% include head-custom.html %}
   </head>
+  <style>
+    canvas{display: block;width: 100%;height: 100%;}
+  </style>
   <body>
     <div class="wrapper">
       <header>
@@ -86,5 +89,7 @@
 -->
     </div>
     <script src="{{ "/assets/js/scale.fix.js" | relative_url }}"></script>
+    <canvas id="canvas"></canvas>
+    <script src="index.js"></script>
   </body>
 </html>
