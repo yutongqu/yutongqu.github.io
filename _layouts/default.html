@@ -29,6 +29,12 @@
         </div>
         {% endif %}
         
+        {% if site.gscholar_logo %}
+        <div class="" style="display: inline-block;">
+          <a href="{{ site.gscholar_link }}"><img src="{{site.gscholar_logo | site.gscholar_link}}" alt="GS Logo" width="40" height="40" /></a>
+        </div>
+        {% endif %}
+        
         {% if site.resgate_logo %}
         <div class="" style="display: inline-block;">
           <a href="{{ site.resgate_link }}"><img src="{{site.resgate_logo | site.resgate_link}}" alt="RG Logo" width="40" height="40" /></a>
