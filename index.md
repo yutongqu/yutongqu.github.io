@@ -4,7 +4,7 @@
 
 ### About me
 
-I am currently a first-year Ph.D student at the [School of Computer and Mathematical Sciences](https://set.adelaide.edu.au/computer-and-mathematical-sciences/), [Faculty of Sciences, Engineering and Technology](https://set.adelaide.edu.au/), [The University of Adelaide](https://adelaide.edu.au/). I am researching in text summarization under the supervision of [Dr. Wei Zhang](https://weiezhang.github.io/) and co-supervision of Dr. Weitong Chen.
+I am currently a first-year Ph.D student at the [School of Computer and Mathematical Sciences](https://set.adelaide.edu.au/computer-and-mathematical-sciences/), [Faculty of Sciences, Engineering and Technology](https://set.adelaide.edu.au/), [The University of Adelaide](https://adelaide.edu.au/). I am researching in text summarization under the supervision of [Dr. Wei Zhang](https://weiezhang.github.io/) and co-supervision of [Dr. Weitong Chen](https://researchers.adelaide.edu.au/profile/weitong.chen).
 
 
 ---
