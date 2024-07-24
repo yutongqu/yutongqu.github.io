@@ -4,7 +4,7 @@
 
 ### About me
 
-I am currently a first-year Ph.D student at the [School of Computer and Mathematical Sciences](https://set.adelaide.edu.au/computer-and-mathematical-sciences/), [Faculty of Sciences, Engineering and Technology](https://set.adelaide.edu.au/), [The University of Adelaide](https://adelaide.edu.au/). I am researching in text summarization under the supervision of [Dr. Wei Zhang](https://weiezhang.github.io/) and co-supervision of [Dr. Weitong Chen](https://researchers.adelaide.edu.au/profile/weitong.chen).
+I am currently a second-year Ph.D student at the [School of Computer and Mathematical Sciences](https://set.adelaide.edu.au/computer-and-mathematical-sciences/), [Faculty of Sciences, Engineering and Technology](https://set.adelaide.edu.au/), [The University of Adelaide](https://adelaide.edu.au/). I am researching in text summarization under the supervision of [Dr. Wei Zhang](https://weiezhang.github.io/) and co-supervision of [Dr. Weitong Chen](https://researchers.adelaide.edu.au/profile/weitong.chen).
 
 
 ---
@@ -47,12 +47,13 @@ Introduction to Statistical Machine Learning   -->
 
 ### Paper Review Services
 
-- Conference Reviewer: ADMA 2023
+- Conference Reviewer: ADMA 2023-2024
 
 ---
 
 ### Awards
 
+- **WISC Student Scholarship Award**, IEEE International Symposium on Women in Services Computing, 2024
 - **Exclusive Dean's Recognition of Academic Excellence Award**, The University of Adelaide, 2020
 
 
