@@ -19,13 +19,21 @@ I am currently a second-year Ph.D student at the [School of Computer and Mathema
 
 ### Publications
 
-**Embedding Knowledge for Document Summarization: A Survey**  
-*Yutong Qu*, Wei Emma Zhang, Jian Yang, Lingfei Wu, Jia Wu, Xindong Wu  
-arXiv, 2022  [[Paper](https://arxiv.org/abs/2204.11190)]  
+**Enhancing Chemistry-Domain Scientific Paper Summarization by Knowledge Graphs**  
+*Yutong Qu*, Jian Yang, Weitong Chen, Yan Jiao, Lishan Yang, Congbo Ma  
+ADMA, 2024 [Paper]
+
+**Data-Product Catalogues: Envisioning with Knowledge-aware Natural Language Processing**  
+*Yutong Qu*, Jian Yang, Wei Emma Zhang, Weitong Chen, Hong Qing Yu  
+ICWS, 2024 [Paper]
 
 **Knowledge-aware Document Summarization: A Survey of Knowledge, Embedding Methods and Architectures**  
 *Yutong Qu*, Wei Emma Zhang, Jian Yang, Lingfei Wu, Jia Wu  
 Knowledge-Based Systems, 2022  [[Paper](https://doi.org/10.1016/j.knosys.2022.109882)]  
+
+**Embedding Knowledge for Document Summarization: A Survey**  
+*Yutong Qu*, Wei Emma Zhang, Jian Yang, Lingfei Wu, Jia Wu, Xindong Wu  
+arXiv, 2022  [[Paper](https://arxiv.org/abs/2204.11190)]  
 
 **Document-aware Positional Encoding and Linguistic-guided Encoding for Abstractive Multi-document Summarization**  
 Congbo Ma, Wei Emma Zhang, Pitawelayalage Dasun Dileepa Pitawela, *Yutong Qu*, Haojie Zhuang, Hu Wang  
@@ -47,14 +55,14 @@ Introduction to Statistical Machine Learning   -->
 
 ### Paper Review Services
 
-- Conference Reviewer: ADMA 2023-2024
+- Conference Reviewer: -
 
 ---
 
 ### Awards
 
 - **WISC Student Scholarship Award**, IEEE International Symposium on Women in Services Computing, 2024
-- **Exclusive Dean's Recognition of Academic Excellence Award**, The University of Adelaide, 2020
+- **Exclusive Dean's Recognition of Academic Excellence Award**, The University of Adelaide, 2021
 
 
 
