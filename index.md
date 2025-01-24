@@ -21,11 +21,11 @@ I am currently a second-year Ph.D student at the [School of Computer and Mathema
 
 **Enhancing Chemistry-Domain Scientific Paper Summarization by Knowledge Graphs**  
 *Yutong Qu*, Jian Yang, Weitong Chen, Yan Jiao, Lishan Yang, Congbo Ma  
-ADMA, 2024 [Paper]
+ADMA, 2024 [[Paper]](https://link.springer.com/chapter/10.1007/978-981-96-0814-0_21)
 
 **Data-Product Catalogues: Envisioning with Knowledge-aware Natural Language Processing**  
 *Yutong Qu*, Jian Yang, Wei Emma Zhang, Weitong Chen, Hong Qing Yu  
-ICWS, 2024 [Paper]
+ICWS, 2024 [[Paper]](https://ieeexplore.ieee.org/abstract/document/10707553)
 
 **Knowledge-aware Document Summarization: A Survey of Knowledge, Embedding Methods and Architectures**  
 *Yutong Qu*, Wei Emma Zhang, Jian Yang, Lingfei Wu, Jia Wu  
