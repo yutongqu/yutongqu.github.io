@@ -10,7 +10,7 @@ I am currently an MPhil student at the [School of Computer Science and Informati
 
 ### Education
 
-- MHMSC, The University of Adelaide, Australia, 2023-Present
+- MHMSC, Adelaide University, Australia, 2023-Present
 - HCOMP, First Class Honours, The University of Adelaide, Australia, 2021-2022
 - BCOMP, majoring in Artificial Intelligence, The University of Adelaide, Australia, 2018-2021
 
