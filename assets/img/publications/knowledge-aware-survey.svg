@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="208" height="156" viewBox="0 0 208 156" role="img" aria-labelledby="title">
+  <title id="title">Knowledge-aware summarisation survey</title>
+  <rect width="208" height="156" fill="#fbfaf7"/>
+  <rect x="28" y="22" width="104" height="112" rx="5" fill="#ffffff" stroke="#ddd6ca"/>
+  <rect x="44" y="42" width="72" height="6" rx="3" fill="#267cb9"/>
+  <rect x="44" y="58" width="60" height="5" rx="2.5" fill="#cfd7df"/>
+  <rect x="44" y="71" width="72" height="5" rx="2.5" fill="#cfd7df"/>
+  <rect x="44" y="84" width="48" height="5" rx="2.5" fill="#cfd7df"/>
+  <circle cx="150" cy="58" r="12" fill="#5f9f7a"/>
+  <circle cx="168" cy="96" r="11" fill="#d47a45"/>
+  <circle cx="133" cy="103" r="10" fill="#6c63a8"/>
+  <path d="M154 69l10 17M157 98l-14 3" stroke="#aeb8c2" stroke-width="4" stroke-linecap="round"/>
+</svg>

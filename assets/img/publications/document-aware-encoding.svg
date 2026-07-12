@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="208" height="156" viewBox="0 0 208 156" role="img" aria-labelledby="title">
+  <title id="title">Document-aware positional encoding</title>
+  <rect width="208" height="156" fill="#f8f9fb"/>
+  <rect x="28" y="28" width="152" height="100" rx="8" fill="#ffffff" stroke="#d8e1ea"/>
+  <path d="M50 54h48M50 72h68M50 90h42" stroke="#c6d0da" stroke-width="6" stroke-linecap="round"/>
+  <path d="M130 48v60" stroke="#e2e7ec" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="148" cy="58" r="8" fill="#267cb9"/>
+  <circle cx="148" cy="78" r="8" fill="#5f9f7a"/>
+  <circle cx="148" cy="98" r="8" fill="#d47a45"/>
+  <path d="M148 66v4M148 86v4" stroke="#9aa9b8" stroke-width="3" stroke-linecap="round"/>
+</svg>

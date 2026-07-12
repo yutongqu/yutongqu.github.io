@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="208" height="156" viewBox="0 0 208 156" role="img" aria-labelledby="title">
+  <title id="title">Chemistry knowledge graph summary</title>
+  <rect width="208" height="156" fill="#f7fafc"/>
+  <rect x="16" y="18" width="176" height="120" rx="8" fill="#ffffff" stroke="#d8e1ea"/>
+  <circle cx="63" cy="61" r="15" fill="#267cb9"/>
+  <circle cx="120" cy="48" r="12" fill="#5f9f7a"/>
+  <circle cx="143" cy="92" r="16" fill="#d47a45"/>
+  <circle cx="78" cy="104" r="11" fill="#6c63a8"/>
+  <path d="M77 58l31-7M130 59l9 19M128 96l-39 6M75 73l5 20" stroke="#9aa9b8" stroke-width="4" stroke-linecap="round"/>
+  <rect x="35" y="124" width="96" height="5" rx="2.5" fill="#cbd5df"/>
+  <rect x="35" y="133" width="62" height="5" rx="2.5" fill="#dbe3ea"/>
+</svg>
