@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="208" height="156" viewBox="0 0 208 156" role="img" aria-labelledby="title">
+  <title id="title">Carbon-supported high-entropy electrocatalyst design via large language models</title>
+  <rect width="208" height="156" fill="#f7faf9"/>
+  <rect x="18" y="22" width="172" height="112" rx="8" fill="#ffffff" stroke="#d8e1df"/>
+  <circle cx="63" cy="78" r="24" fill="#2f3a42"/>
+  <circle cx="55" cy="69" r="6" fill="#267cb9"/>
+  <circle cx="72" cy="65" r="6" fill="#5f9f7a"/>
+  <circle cx="80" cy="82" r="6" fill="#d47a45"/>
+  <circle cx="61" cy="92" r="6" fill="#6c63a8"/>
+  <circle cx="47" cy="83" r="6" fill="#b85c5c"/>
+  <path d="M95 78h26" stroke="#9aa9b8" stroke-width="4" stroke-linecap="round"/>
+  <path d="M114 68l10 10-10 10" fill="none" stroke="#9aa9b8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="132" y="48" width="42" height="60" rx="6" fill="#f3f7fb" stroke="#cfd9e2"/>
+  <path d="M143 63h20M143 77h16M143 91h22" stroke="#267cb9" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="153" cy="122" r="6" fill="#5f9f7a"/>
+  <path d="M153 112v-8" stroke="#9aa9b8" stroke-width="3" stroke-linecap="round"/>
+</svg>
