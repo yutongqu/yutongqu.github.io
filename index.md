@@ -60,7 +60,7 @@ I am currently an MPhil student at the [School of Computer Science and Informati
     <div>
       <p class="publication-title"><strong>Carbon-Supported High-Entropy Electrocatalyst Design via Large Language Models</strong></p>
       <p class="publication-authors">Yiran Jiao, <em>Yutong Qu</em>, Wei Emma Zhang, Yan Jiao, Shizhang Qiao</p>
-      <p class="publication-venue">ACS Catalysis, 2026</p>
+      <p class="publication-venue">ACS Catalysis, 2026 [<a href="https://pubs.acs.org/doi/10.1021/acscatal.6c00635">Paper</a>]</p>
     </div>
   </article>
 
