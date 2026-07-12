@@ -4,14 +4,14 @@
 
 ### About me
 
-I am currently a second-year Ph.D student at the [School of Computer and Mathematical Sciences](https://set.adelaide.edu.au/computer-and-mathematical-sciences/), [Faculty of Sciences, Engineering and Technology](https://set.adelaide.edu.au/), [The University of Adelaide](https://adelaide.edu.au/). I am researching in text summarization under the supervision of [Dr. Wei Zhang](https://weiezhang.github.io/) and co-supervision of [Dr. Weitong Chen](https://researchers.adelaide.edu.au/profile/weitong.chen).
+I am currently an MPhil student at the [School of Computer and Mathematical Sciences](https://set.adelaide.edu.au/computer-and-mathematical-sciences/), [Faculty of Sciences, Engineering and Technology](https://set.adelaide.edu.au/), [The University of Adelaide](https://adelaide.edu.au/). I am researching in text summarisation under the supervision of [Dr. Wei Zhang](https://weiezhang.github.io/) and co-supervision of [Dr. Weitong Chen](https://researchers.adelaide.edu.au/profile/weitong.chen).
 
 
 ---
 
 ### Education
 
-- PHMSC, The University of Adelaide, Australia, 2023-Present
+- MHMSC, The University of Adelaide, Australia, 2023-Present
 - HCOMP, First Class Honours, The University of Adelaide, Australia, 2021-2022
 - BCOMP, majoring in Artificial Intelligence, The University of Adelaide, Australia, 2018-2021
 
@@ -19,7 +19,7 @@ I am currently a second-year Ph.D student at the [School of Computer and Mathema
 
 ### Publications
 
-**Enhancing Chemistry-Domain Scientific Paper Summarization by Knowledge Graphs**  
+**Enhancing Chemistry-Domain Scientific Paper Summarisation by Knowledge Graphs**  
 *Yutong Qu*, Jian Yang, Weitong Chen, Yan Jiao, Lishan Yang, Congbo Ma  
 ADMA, 2024 [[Paper]](https://link.springer.com/chapter/10.1007/978-981-96-0814-0_21)
 
@@ -27,11 +27,11 @@ ADMA, 2024 [[Paper]](https://link.springer.com/chapter/10.1007/978-981-96-0814-0
 *Yutong Qu*, Jian Yang, Wei Emma Zhang, Weitong Chen, Hong Qing Yu  
 ICWS, 2024 [[Paper]](https://ieeexplore.ieee.org/abstract/document/10707553)
 
-**Knowledge-aware Document Summarization: A Survey of Knowledge, Embedding Methods and Architectures**  
+**Knowledge-aware Document Summarisation: A Survey of Knowledge, Embedding Methods and Architectures**  
 *Yutong Qu*, Wei Emma Zhang, Jian Yang, Lingfei Wu, Jia Wu  
 Knowledge-Based Systems, 2022  [[Paper](https://doi.org/10.1016/j.knosys.2022.109882)]  
 
-**Embedding Knowledge for Document Summarization: A Survey**  
+**Embedding Knowledge for Document Summarisation: A Survey**  
 *Yutong Qu*, Wei Emma Zhang, Jian Yang, Lingfei Wu, Jia Wu, Xindong Wu  
 arXiv, 2022  [[Paper](https://arxiv.org/abs/2204.11190)]  
 
