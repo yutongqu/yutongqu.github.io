@@ -4,8 +4,7 @@
 
 ### About me
 
-I am currently an MPhil student at the [School of Computer and Mathematical Sciences](https://set.adelaide.edu.au/computer-and-mathematical-sciences/), [Faculty of Sciences, Engineering and Technology](https://set.adelaide.edu.au/), [The University of Adelaide](https://adelaide.edu.au/). I am researching in text summarisation under the supervision of [Dr. Wei Zhang](https://weiezhang.github.io/) and co-supervision of [Dr. Weitong Chen](https://researchers.adelaide.edu.au/profile/weitong.chen).
-
+I am currently an MPhil student at the [School of Computer Science and Information Technology](https://adelaide.edu.au/about/school/computer-science-information-technology/), [College of Engineering and Information Technology](https://adelaide.edu.au/about/college/engineering-and-information-technology/), [Adelaide University](https://adelaide.edu.au/). I am researching in information management under the supervision of [Dr. Wei Zhang](https://weiezhang.github.io/) and co-supervision of Dr. Lin Yue.
 
 ---
 
@@ -19,37 +18,61 @@ I am currently an MPhil student at the [School of Computer and Mathematical Scie
 
 ### Publications
 
-**Enhancing Chemistry-Domain Scientific Paper Summarisation by Knowledge Graphs**  
-*Yutong Qu*, Jian Yang, Weitong Chen, Yan Jiao, Lishan Yang, Congbo Ma  
-ADMA, 2024 [[Paper]](https://link.springer.com/chapter/10.1007/978-981-96-0814-0_21)
+<div class="publication-list">
+  <article class="publication-item">
+    <img class="publication-thumb" src="{{ '/assets/img/publications/chemistry-kg.svg' | relative_url }}" alt="Chemistry knowledge graph summary thumbnail">
+    <div>
+      <p class="publication-title"><strong>Enhancing Chemistry-Domain Scientific Paper Summarisation by Knowledge Graphs</strong></p>
+      <p class="publication-authors"><em>Yutong Qu</em>, Jian Yang, Weitong Chen, Yan Jiao, Lishan Yang, Congbo Ma</p>
+      <p class="publication-venue">ADMA, 2024 [<a href="https://link.springer.com/chapter/10.1007/978-981-96-0814-0_21">Paper</a>]</p>
+    </div>
+  </article>
+ 
+  <article class="publication-item">
+    <img class="publication-thumb" src="{{ '/assets/img/publications/data-product-catalogues.svg' | relative_url }}" alt="Data product catalogues thumbnail">
+    <div>
+      <p class="publication-title"><strong>Data-Product Catalogues: Envisioning with Knowledge-aware Natural Language Processing</strong></p>
+      <p class="publication-authors"><em>Yutong Qu</em>, Jian Yang, Wei Emma Zhang, Weitong Chen, Hong Qing Yu</p>
+      <p class="publication-venue">ICWS, 2024 [<a href="https://ieeexplore.ieee.org/abstract/document/10707553">Paper</a>]</p>
+    </div>
+  </article>
 
-**Data-Product Catalogues: Envisioning with Knowledge-aware Natural Language Processing**  
-*Yutong Qu*, Jian Yang, Wei Emma Zhang, Weitong Chen, Hong Qing Yu  
-ICWS, 2024 [[Paper]](https://ieeexplore.ieee.org/abstract/document/10707553)
+  <article class="publication-item">
+    <img class="publication-thumb" src="{{ '/assets/img/publications/knowledge-aware-survey.svg' | relative_url }}" alt="Knowledge-aware summarisation survey thumbnail">
+    <div>
+      <p class="publication-title"><strong>Knowledge-aware Document Summarisation: A Survey of Knowledge, Embedding Methods and Architectures</strong></p>
+      <p class="publication-authors"><em>Yutong Qu</em>, Wei Emma Zhang, Jian Yang, Lingfei Wu, Jia Wu</p>
+      <p class="publication-venue">Knowledge-Based Systems, 2022 [<a href="https://doi.org/10.1016/j.knosys.2022.109882">Paper</a>]</p>
+    </div>
+  </article>
 
-**Knowledge-aware Document Summarisation: A Survey of Knowledge, Embedding Methods and Architectures**  
-*Yutong Qu*, Wei Emma Zhang, Jian Yang, Lingfei Wu, Jia Wu  
-Knowledge-Based Systems, 2022  [[Paper](https://doi.org/10.1016/j.knosys.2022.109882)]  
+  <article class="publication-item">
+    <img class="publication-thumb" src="{{ '/assets/img/publications/embedding-knowledge.svg' | relative_url }}" alt="Embedding knowledge survey thumbnail">
+    <div>
+      <p class="publication-title"><strong>Embedding Knowledge for Document Summarisation: A Survey</strong></p>
+      <p class="publication-authors"><em>Yutong Qu</em>, Wei Emma Zhang, Jian Yang, Lingfei Wu, Jia Wu, Xindong Wu</p>
+      <p class="publication-venue">arXiv, 2022 [<a href="https://arxiv.org/abs/2204.11190">Paper</a>]</p>
+    </div>
+  </article>
 
-**Embedding Knowledge for Document Summarisation: A Survey**  
-*Yutong Qu*, Wei Emma Zhang, Jian Yang, Lingfei Wu, Jia Wu, Xindong Wu  
-arXiv, 2022  [[Paper](https://arxiv.org/abs/2204.11190)]  
-
-**Document-aware Positional Encoding and Linguistic-guided Encoding for Abstractive Multi-document Summarization**  
-Congbo Ma, Wei Emma Zhang, Pitawelayalage Dasun Dileepa Pitawela, *Yutong Qu*, Haojie Zhuang, Hu Wang  
-WCCI-IJCNN, 2022  [[Paper](https://arxiv.org/abs/2209.05929)]  
-<!-- Accepted by IJCNN at IEEE WCCI 2022  [[Paper](https://arxiv.org/abs/2209.05929)]   -->
-
-**Learning From the Source Document: Unsupervised Abstractive Summarization**  
-Haojie Zhuang, Wei Emma Zhang, Jian Yang, Congbo Ma, *Yutong Qu*, Quan Z. Sheng  
-Findings of ACL EMNLP, 2022  [[Paper](https://aclanthology.org/2022.findings-emnlp.309)]  
-
-<!-- ---
-
-### Work Experience
-- **Student Tutor**  
-2023-Present, The University of Adelaide, Australia  
-Introduction to Statistical Machine Learning   -->
+  <article class="publication-item">
+    <img class="publication-thumb" src="{{ '/assets/img/publications/document-aware-encoding.svg' | relative_url }}" alt="Document-aware encoding thumbnail">
+    <div>
+      <p class="publication-title"><strong>Document-aware Positional Encoding and Linguistic-guided Encoding for Abstractive Multi-document Summarization</strong></p>
+      <p class="publication-authors">Congbo Ma, Wei Emma Zhang, Pitawelayalage Dasun Dileepa Pitawela, <em>Yutong Qu</em>, Haojie Zhuang, Hu Wang</p>
+      <p class="publication-venue">WCCI-IJCNN, 2022 [<a href="https://arxiv.org/abs/2209.05929">Paper</a>]</p>
+    </div>
+  </article>
+  
+  <article class="publication-item">
+    <img class="publication-thumb" src="{{ '/assets/img/publications/source-document.svg' | relative_url }}" alt="Learning from source document thumbnail">
+    <div>
+      <p class="publication-title"><strong>Learning From the Source Document: Unsupervised Abstractive Summarization</strong></p>
+      <p class="publication-authors">Haojie Zhuang, Wei Emma Zhang, Jian Yang, Congbo Ma, <em>Yutong Qu</em>, Quan Z. Sheng</p>
+      <p class="publication-venue">Findings of ACL EMNLP, 2022 [<a href="https://aclanthology.org/2022.findings-emnlp.309">Paper</a>]</p>
+    </div>
+  </article>
+</div>
 
 ---
 
