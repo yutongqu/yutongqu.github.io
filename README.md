@@ -10,5 +10,8 @@ index.md
 
 ###
 
+### CSS:
+_sass/jekyll-theme-minimal.scss
+
 ### Setting:
 _config.yml
