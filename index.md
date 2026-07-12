@@ -56,6 +56,15 @@ I am currently an MPhil student at the [School of Computer Science and Informati
   </article>
 
   <article class="publication-item">
+    <img class="publication-thumb" src="{{ '/assets/img/publications/high-entropy-electrocatalyst.svg' | relative_url }}" alt="Carbon-supported high-entropy electrocatalyst design thumbnail">
+    <div>
+      <p class="publication-title"><strong>Carbon-Supported High-Entropy Electrocatalyst Design via Large Language Models</strong></p>
+      <p class="publication-authors">Yiran Jiao, <em>Yutong Qu</em>, Wei Emma Zhang, Yan Jiao, Shizhang Qiao</p>
+      <p class="publication-venue">ACS Catalysis, 2026</p>
+    </div>
+  </article>
+
+  <article class="publication-item">
     <img class="publication-thumb" src="{{ '/assets/img/publications/document-aware-encoding.svg' | relative_url }}" alt="Document-aware encoding thumbnail">
     <div>
       <p class="publication-title"><strong>Document-aware Positional Encoding and Linguistic-guided Encoding for Abstractive Multi-document Summarization</strong></p>
