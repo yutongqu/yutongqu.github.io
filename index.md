@@ -4,7 +4,7 @@
 
 ### About me
 
-I am currently an MPhil student at the [School of Computer Science and Information Technology](https://adelaide.edu.au/about/school/computer-science-information-technology/), [College of Engineering and Information Technology](https://adelaide.edu.au/about/college/engineering-and-information-technology/), [Adelaide University](https://adelaide.edu.au/). I am researching in information management under the supervision of [Dr. Wei Zhang](https://weiezhang.github.io/) and co-supervision of Dr. Lin Yue.
+I am currently an MPhil student at the [School of Computer Science and Information Technology](https://adelaide.edu.au/about/school/computer-science-information-technology/), [College of Engineering and Information Technology](https://adelaide.edu.au/about/college/engineering-and-information-technology/), [Adelaide University](https://adelaide.edu.au/). I am researching in artificial intelligence and information management under the supervision of [Dr. Wei Zhang](https://weiezhang.github.io/) and co-supervision of Dr. Lin Yue.
 
 ---
 
