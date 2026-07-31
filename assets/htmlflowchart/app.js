@@ -7,6 +7,9 @@
   const statusBox = document.getElementById('status');
   const toggleAllBtn = document.getElementById('toggleAllBtn');
   const batchSelectBtn = document.getElementById('batchSelectBtn');
+  const exportPortableBtn = document.getElementById('exportPortableBtn');
+  const importProjectBtn = document.getElementById('importProjectBtn');
+  const importProjectInput = document.getElementById('importProjectInput');
   const flowchartSearchInput =
     document.getElementById('flowchartSearchInput');
   const fileTree = document.getElementById('fileTree');
@@ -99,8 +102,181 @@
   let edgeFlipTarget = null;
   let edgeFlipShowTimer = null;
   let edgeFlipHideTimer = null;
+  const MEDIA_DATABASE_NAME = 'flowchart-media-v1';
+  const MEDIA_DATABASE_VERSION = 1;
+  const MEDIA_STORE_NAME = 'assets';
+  const MEDIA_REFERENCE_PREFIX = 'flowchart-media:';
+  const mediaObjectUrls = new Map();
 
   const initialState = window.__FLOW_STATE__ || null;
+
+  function openMediaDatabase() {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open(
+        MEDIA_DATABASE_NAME,
+        MEDIA_DATABASE_VERSION
+      );
+      request.addEventListener('upgradeneeded', () => {
+        const database = request.result;
+        if (!database.objectStoreNames.contains(MEDIA_STORE_NAME)) {
+          const store = database.createObjectStore(
+            MEDIA_STORE_NAME,
+            { keyPath: 'id' }
+          );
+          store.createIndex('documentId', 'documentId', { unique: false });
+        }
+      });
+      request.addEventListener('success', () => resolve(request.result));
+      request.addEventListener('error', () => reject(request.error));
+    });
+  }
+
+  async function withMediaStore(mode, operation) {
+    const database = await openMediaDatabase();
+    try {
+      return await new Promise((resolve, reject) => {
+        const transaction = database.transaction(MEDIA_STORE_NAME, mode);
+        const store = transaction.objectStore(MEDIA_STORE_NAME);
+        let result;
+        try {
+          result = operation(store, transaction);
+        } catch (error) {
+          reject(error);
+          return;
+        }
+        transaction.addEventListener('complete', () => resolve(result));
+        transaction.addEventListener('abort', () =>
+          reject(transaction.error || new Error('媒体数据库事务已中止'))
+        );
+        transaction.addEventListener('error', () =>
+          reject(transaction.error || new Error('媒体数据库操作失败'))
+        );
+      });
+    } finally {
+      database.close();
+    }
+  }
+
+  function mediaDocumentId() {
+    return DOCUMENT_STORAGE_ID || DOCUMENT_STORAGE_PATH;
+  }
+
+  function createMediaId() {
+    return `media-${Date.now()}-${crypto.randomUUID?.() ||
+      Math.random().toString(36).slice(2)}`;
+  }
+
+  async function putMediaBlob(blob, metadata = {}) {
+    const id = metadata.id || createMediaId();
+    await withMediaStore('readwrite', store => {
+      store.put({
+        id,
+        documentId: mediaDocumentId(),
+        name: metadata.name || '媒体文件',
+        type: metadata.type || blob.type || 'application/octet-stream',
+        createdAt: metadata.createdAt || Date.now(),
+        blob
+      });
+    });
+    return id;
+  }
+
+  async function getMediaRecord(id) {
+    const database = await openMediaDatabase();
+    try {
+      return await new Promise((resolve, reject) => {
+        const request = database
+          .transaction(MEDIA_STORE_NAME, 'readonly')
+          .objectStore(MEDIA_STORE_NAME)
+          .get(id);
+        request.addEventListener('success', () => resolve(request.result || null));
+        request.addEventListener('error', () => reject(request.error));
+      });
+    } finally {
+      database.close();
+    }
+  }
+
+  async function getDocumentMediaRecords() {
+    const database = await openMediaDatabase();
+    try {
+      return await new Promise((resolve, reject) => {
+        const transaction = database.transaction(MEDIA_STORE_NAME, 'readonly');
+        const store = transaction.objectStore(MEDIA_STORE_NAME);
+        const index = store.index('documentId');
+        const request = index.getAll(mediaDocumentId());
+        request.addEventListener('success', () => resolve(request.result || []));
+        request.addEventListener('error', () => reject(request.error));
+      });
+    } finally {
+      database.close();
+    }
+  }
+
+  async function deleteDocumentMedia() {
+    const records = await getDocumentMediaRecords();
+    if (!records.length) return;
+    await withMediaStore('readwrite', store => {
+      records.forEach(record => store.delete(record.id));
+    });
+    for (const record of records) {
+      const url = mediaObjectUrls.get(record.id);
+      if (url) URL.revokeObjectURL(url);
+      mediaObjectUrls.delete(record.id);
+    }
+  }
+
+  async function mediaObjectUrl(id) {
+    if (mediaObjectUrls.has(id)) return mediaObjectUrls.get(id);
+    const record = await getMediaRecord(id);
+    if (!record?.blob) return '';
+    const url = URL.createObjectURL(record.blob);
+    mediaObjectUrls.set(id, url);
+    return url;
+  }
+
+  async function hydrateMediaInElement(root) {
+    const elements = [...root.querySelectorAll('[data-media-id]')];
+    await Promise.all(elements.map(async element => {
+      const id = element.dataset.mediaId;
+      if (!id) return;
+      const url = await mediaObjectUrl(id);
+      if (url && element.isConnected) element.src = url;
+    }));
+  }
+
+  function dataUrlToBlob(dataUrl) {
+    const match = /^data:([^;,]*)(;base64)?,(.*)$/s.exec(dataUrl);
+    if (!match) throw new Error('无效的媒体 Data URL');
+    const type = match[1] || 'application/octet-stream';
+    const binary = match[2]
+      ? atob(match[3])
+      : decodeURIComponent(match[3]);
+    const bytes = new Uint8Array(binary.length);
+    for (let index = 0; index < binary.length; index += 1) {
+      bytes[index] = binary.charCodeAt(index);
+    }
+    return new Blob([bytes], { type });
+  }
+
+  async function externalizeMediaHTML(html) {
+    if (!html || !html.includes('data:')) return html;
+    const template = document.createElement('template');
+    template.innerHTML = html;
+    const mediaElements = [...template.content.querySelectorAll('img, video')];
+    for (const media of mediaElements) {
+      const source = media.getAttribute('src') || '';
+      if (!source.startsWith('data:')) continue;
+      const blob = dataUrlToBlob(source);
+      const id = await putMediaBlob(blob, {
+        name: media.getAttribute('alt') || `${media.tagName.toLowerCase()}-${Date.now()}`,
+        type: blob.type
+      });
+      media.dataset.mediaId = id;
+      media.setAttribute('src', '');
+    }
+    return template.innerHTML;
+  }
 
   function currentHTMLFileName() {
     const encodedName = DOCUMENT_STORAGE_PATH.split('/').pop() || 'index.html';
@@ -405,6 +581,7 @@
     detailEditorContent.innerHTML = sanitizeRichHTML(
       node.richContent ?? plainTextToRichHTML(node.text)
     );
+    hydrateMediaInElement(detailEditorContent);
     detailEditorContent.classList.toggle(
       'show-grid',
       detailEditorGridVisible
@@ -446,7 +623,7 @@
     updateEditorCommandStates();
   }
 
-  function saveDetailEditor() {
+  async function saveDetailEditor() {
     const node = nodeById(detailEditorNodeId);
     if (!node) {
       closeDetailEditor();
@@ -475,17 +652,25 @@
       code.removeAttribute('spellcheck');
       code.removeAttribute('tabindex');
     });
-    const html = sanitizeRichHTML(contentClone.innerHTML);
+    const html = sanitizeRichHTML(
+      await externalizeMediaHTML(contentClone.innerHTML)
+    );
     const textContainer = document.createElement('div');
     textContainer.innerHTML = html;
     node.richContent = html;
     node.text = textContainer.innerText;
-    detailEditorContent.innerHTML = html;
-    prepareDetailEditorMedia();
-    prepareDetailEditorCodeBlocks();
-    requestDetailEditorGridLayoutUpdate();
+    if (detailEditorNodeId === node.id) {
+      detailEditorContent.innerHTML = html;
+      hydrateMediaInElement(detailEditorContent);
+      prepareDetailEditorMedia();
+      prepareDetailEditorCodeBlocks();
+      requestDetailEditorGridLayoutUpdate();
+    }
     const nodeText = getNodeElement(node.id)?.querySelector('.node-text');
-    if (nodeText) nodeText.innerHTML = html;
+    if (nodeText) {
+      nodeText.innerHTML = html;
+      hydrateMediaInElement(nodeText);
+    }
     updateNodeSearchHighlights();
     requestEdgeRender();
     scheduleAutoSave();
@@ -997,25 +1182,28 @@
     });
   }
 
-  function insertDetailEditorMedia(file, type) {
+  async function insertDetailEditorMedia(file, type) {
     if (!file) return;
-    if (file.size > 6 * 1024 * 1024) {
-      showStatus('媒体文件需小于 6MB，以保证页面可以自动保存');
-      return;
-    }
-    const reader = new FileReader();
-    reader.addEventListener('load', () => {
-      const source = String(reader.result);
+    try {
+      const mediaId = await putMediaBlob(file, {
+        name: file.name,
+        type: file.type
+      });
+      const source = URL.createObjectURL(file);
+      mediaObjectUrls.set(mediaId, source);
       const name = escapeHTML(file.name);
       insertDetailEditorHTML(
         type === 'image'
-          ? `<div class="editor-media-row" contenteditable="false"><span class="editor-media-frame" contenteditable="false" draggable="true" style="width:min(100%, 560px)"><img src="${source}" alt="${name}" draggable="false"><button class="editor-media-resize-handle" type="button" tabindex="-1" aria-label="拖动调整媒体尺寸"></button></span></div><p><br></p>`
-          : `<div class="editor-media-row" contenteditable="false"><span class="editor-media-frame" contenteditable="false" draggable="true" style="width:min(100%, 560px)"><video src="${source}" controls preload="metadata" draggable="false"></video><button class="editor-media-resize-handle" type="button" tabindex="-1" aria-label="拖动调整媒体尺寸"></button></span></div><p><br></p>`
+          ? `<div class="editor-media-row" contenteditable="false"><span class="editor-media-frame" contenteditable="false" draggable="true" style="width:min(100%, 560px)"><img src="${source}" data-media-id="${mediaId}" alt="${name}" draggable="false"><button class="editor-media-resize-handle" type="button" tabindex="-1" aria-label="拖动调整媒体尺寸"></button></span></div><p><br></p>`
+          : `<div class="editor-media-row" contenteditable="false"><span class="editor-media-frame" contenteditable="false" draggable="true" style="width:min(100%, 560px)"><video src="${source}" data-media-id="${mediaId}" controls preload="metadata" draggable="false"></video><button class="editor-media-resize-handle" type="button" tabindex="-1" aria-label="拖动调整媒体尺寸"></button></span></div><p><br></p>`
       );
       prepareDetailEditorMedia();
       ensureCodeBlockSpacing();
-    });
-    reader.readAsDataURL(file);
+      showStatus('媒体已加入项目，点击保存同步到卡片');
+    } catch (error) {
+      console.error(error);
+      showStatus('媒体保存失败，请检查浏览器可用空间');
+    }
   }
 
   function createNode(x, y, text = '新节点', forcedId = null, title = '标题', properties = null, expanded = false) {
@@ -1215,6 +1403,7 @@
     text.innerHTML = sanitizeRichHTML(
       node.richContent ?? plainTextToRichHTML(node.text)
     );
+    hydrateMediaInElement(text);
     bindEditable(text, () => {
       node.richContent = sanitizeRichHTML(text.innerHTML);
       node.text = text.innerText;
@@ -2841,6 +3030,37 @@
     persistWorkspace();
   }
 
+  async function migrateLegacyWorkspaceMedia() {
+    let changed = false;
+    try {
+      for (const folder of workspaceData?.folders || []) {
+        for (const chart of folder.charts || []) {
+          for (const node of chart.state?.nodes || []) {
+            if (!node.richContent?.includes('data:')) continue;
+            const migrated = await externalizeMediaHTML(node.richContent);
+            if (migrated !== node.richContent) {
+              node.richContent = migrated;
+              changed = true;
+            }
+          }
+        }
+      }
+      if (!changed) return;
+      persistWorkspace();
+      const chart = activeChart();
+      if (chart?.state) {
+        isLoadingChart = true;
+        loadState(chart.state);
+        isLoadingChart = false;
+        resetHistory();
+      }
+      showStatus('旧版媒体已迁移到 IndexedDB');
+    } catch (error) {
+      console.error('旧版媒体迁移失败', error);
+      showStatus('部分旧版媒体暂未迁移，原数据仍保留');
+    }
+  }
+
   function updateEmptyMessage() {
     emptyMessage.style.display = nodes.length ? 'none' : 'block';
   }
@@ -3504,6 +3724,335 @@
     context.arcTo(x, y + height, x, y, r);
     context.arcTo(x, y, x + width, y, r);
     context.closePath();
+  }
+
+  const zipTextEncoder = new TextEncoder();
+  const zipTextDecoder = new TextDecoder();
+  let zipCrcTable = null;
+
+  function crc32(bytes) {
+    if (!zipCrcTable) {
+      zipCrcTable = new Uint32Array(256);
+      for (let value = 0; value < 256; value += 1) {
+        let current = value;
+        for (let bit = 0; bit < 8; bit += 1) {
+          current = (current & 1)
+            ? (0xedb88320 ^ (current >>> 1))
+            : (current >>> 1);
+        }
+        zipCrcTable[value] = current >>> 0;
+      }
+    }
+    let crc = 0xffffffff;
+    for (const byte of bytes) {
+      crc = zipCrcTable[(crc ^ byte) & 0xff] ^ (crc >>> 8);
+    }
+    return (crc ^ 0xffffffff) >>> 0;
+  }
+
+  function zipDateTime(date = new Date()) {
+    const year = Math.max(1980, date.getFullYear());
+    return {
+      time:
+        (date.getHours() << 11) |
+        (date.getMinutes() << 5) |
+        Math.floor(date.getSeconds() / 2),
+      date:
+        ((year - 1980) << 9) |
+        ((date.getMonth() + 1) << 5) |
+        date.getDate()
+    };
+  }
+
+  function concatenateBytes(parts) {
+    const length = parts.reduce((total, part) => total + part.length, 0);
+    const output = new Uint8Array(length);
+    let offset = 0;
+    for (const part of parts) {
+      output.set(part, offset);
+      offset += part.length;
+    }
+    return output;
+  }
+
+  function createZipArchive(entries) {
+    const localParts = [];
+    const centralParts = [];
+    let localOffset = 0;
+    const timestamp = zipDateTime();
+
+    for (const entry of entries) {
+      const name = zipTextEncoder.encode(entry.name);
+      const data = entry.data instanceof Uint8Array
+        ? entry.data
+        : zipTextEncoder.encode(String(entry.data));
+      const checksum = crc32(data);
+      const localHeader = new Uint8Array(30 + name.length);
+      const localView = new DataView(localHeader.buffer);
+      localView.setUint32(0, 0x04034b50, true);
+      localView.setUint16(4, 20, true);
+      localView.setUint16(6, 0x0800, true);
+      localView.setUint16(8, 0, true);
+      localView.setUint16(10, timestamp.time, true);
+      localView.setUint16(12, timestamp.date, true);
+      localView.setUint32(14, checksum, true);
+      localView.setUint32(18, data.length, true);
+      localView.setUint32(22, data.length, true);
+      localView.setUint16(26, name.length, true);
+      localHeader.set(name, 30);
+      localParts.push(localHeader, data);
+
+      const centralHeader = new Uint8Array(46 + name.length);
+      const centralView = new DataView(centralHeader.buffer);
+      centralView.setUint32(0, 0x02014b50, true);
+      centralView.setUint16(4, 20, true);
+      centralView.setUint16(6, 20, true);
+      centralView.setUint16(8, 0x0800, true);
+      centralView.setUint16(10, 0, true);
+      centralView.setUint16(12, timestamp.time, true);
+      centralView.setUint16(14, timestamp.date, true);
+      centralView.setUint32(16, checksum, true);
+      centralView.setUint32(20, data.length, true);
+      centralView.setUint32(24, data.length, true);
+      centralView.setUint16(28, name.length, true);
+      centralView.setUint32(42, localOffset, true);
+      centralHeader.set(name, 46);
+      centralParts.push(centralHeader);
+      localOffset += localHeader.length + data.length;
+    }
+
+    const centralDirectory = concatenateBytes(centralParts);
+    const end = new Uint8Array(22);
+    const endView = new DataView(end.buffer);
+    endView.setUint32(0, 0x06054b50, true);
+    endView.setUint16(8, entries.length, true);
+    endView.setUint16(10, entries.length, true);
+    endView.setUint32(12, centralDirectory.length, true);
+    endView.setUint32(16, localOffset, true);
+    return new Blob(
+      [...localParts, centralDirectory, end],
+      { type: 'application/zip' }
+    );
+  }
+
+  function readZipArchive(arrayBuffer) {
+    const bytes = new Uint8Array(arrayBuffer);
+    const view = new DataView(arrayBuffer);
+    let endOffset = -1;
+    const minimum = Math.max(0, bytes.length - 65557);
+    for (let offset = bytes.length - 22; offset >= minimum; offset -= 1) {
+      if (view.getUint32(offset, true) === 0x06054b50) {
+        endOffset = offset;
+        break;
+      }
+    }
+    if (endOffset < 0) throw new Error('不是有效的 .flowchart 项目包');
+    const entryCount = view.getUint16(endOffset + 10, true);
+    let offset = view.getUint32(endOffset + 16, true);
+    const entries = new Map();
+
+    for (let index = 0; index < entryCount; index += 1) {
+      if (view.getUint32(offset, true) !== 0x02014b50) {
+        throw new Error('项目包目录已损坏');
+      }
+      const method = view.getUint16(offset + 10, true);
+      const checksum = view.getUint32(offset + 16, true);
+      const compressedSize = view.getUint32(offset + 20, true);
+      const nameLength = view.getUint16(offset + 28, true);
+      const extraLength = view.getUint16(offset + 30, true);
+      const commentLength = view.getUint16(offset + 32, true);
+      const localHeaderOffset = view.getUint32(offset + 42, true);
+      const name = zipTextDecoder.decode(
+        bytes.slice(offset + 46, offset + 46 + nameLength)
+      );
+      if (method !== 0) {
+        throw new Error('该项目包使用了当前版本不支持的压缩算法');
+      }
+      if (view.getUint32(localHeaderOffset, true) !== 0x04034b50) {
+        throw new Error('项目包文件记录已损坏');
+      }
+      const localNameLength = view.getUint16(localHeaderOffset + 26, true);
+      const localExtraLength = view.getUint16(localHeaderOffset + 28, true);
+      const dataOffset =
+        localHeaderOffset + 30 + localNameLength + localExtraLength;
+      const data = bytes.slice(dataOffset, dataOffset + compressedSize);
+      if (crc32(data) !== checksum) {
+        throw new Error(`项目包文件校验失败：${name}`);
+      }
+      entries.set(name, data);
+      offset += 46 + nameLength + extraLength + commentLength;
+    }
+    return entries;
+  }
+
+  function safePackageName(value) {
+    return String(value || 'flowchart')
+      .replace(/[\\/:*?"<>|]/g, '-')
+      .replace(/\s+/g, ' ')
+      .trim() || 'flowchart';
+  }
+
+  async function fetchPageAsset(path) {
+    try {
+      const response = await fetch(new URL(path, window.location.href));
+      if (!response.ok) return '';
+      return await response.text();
+    } catch {
+      return '';
+    }
+  }
+
+  async function exportPortableProject() {
+    saveCurrentChart();
+    exportPortableBtn.disabled = true;
+    exportPortableBtn.textContent = '正在打包…';
+    try {
+      const mediaRecords = await getDocumentMediaRecords();
+      const assetManifest = [];
+      const entries = [];
+      for (const record of mediaRecords) {
+        const extension =
+          record.name?.match(/\.([a-z0-9]{1,8})$/i)?.[1] ||
+          record.type?.split('/')[1]?.split('+')[0] ||
+          'bin';
+        const path = `assets/${record.id}.${extension}`;
+        entries.push({
+          name: path,
+          data: new Uint8Array(await record.blob.arrayBuffer())
+        });
+        assetManifest.push({
+          id: record.id,
+          path,
+          name: record.name,
+          type: record.type,
+          createdAt: record.createdAt
+        });
+      }
+
+      const manifest = {
+        format: 'htmlflowchart-project',
+        version: 1,
+        createdAt: new Date().toISOString(),
+        sourceDocumentId: mediaDocumentId(),
+        sourceFileName: currentHTMLFileName(),
+        projectFile: 'project.json',
+        htmlFile: 'transferable.html',
+        assets: assetManifest
+      };
+      const portableDocument = '<!DOCTYPE html>\n' +
+        document.documentElement.outerHTML;
+      const [styleSource, appSource] = await Promise.all([
+        fetchPageAsset('style.css'),
+        fetchPageAsset('app.js')
+      ]);
+      entries.unshift(
+        {
+          name: 'manifest.json',
+          data: JSON.stringify(manifest, null, 2)
+        },
+        {
+          name: 'project.json',
+          data: JSON.stringify(workspaceData)
+        },
+        {
+          name: 'transferable.html',
+          data: portableDocument
+        }
+      );
+      if (styleSource) entries.push({ name: 'style.css', data: styleSource });
+      if (appSource) entries.push({ name: 'app.js', data: appSource });
+
+      const archive = createZipArchive(entries);
+      const url = URL.createObjectURL(archive);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${safePackageName(
+        currentHTMLFileName().replace(/\.html?$/i, '')
+      )}-${new Date().toISOString().slice(0, 10)}.flowchart`;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      showStatus(`项目包已导出，包含 ${mediaRecords.length} 个媒体文件`);
+    } catch (error) {
+      console.error(error);
+      showStatus(`项目包导出失败：${error.message || '请重试'}`);
+    } finally {
+      exportPortableBtn.disabled = false;
+      exportPortableBtn.textContent = '导出可迁移 HTML';
+    }
+  }
+
+  async function importPortableProject(file) {
+    if (!file) return;
+    importProjectBtn.disabled = true;
+    importProjectBtn.textContent = '正在导入…';
+    try {
+      const entries = readZipArchive(await file.arrayBuffer());
+      const manifestBytes = entries.get('manifest.json');
+      const projectBytes = entries.get('project.json');
+      if (!manifestBytes || !projectBytes) {
+        throw new Error('项目包缺少 manifest.json 或 project.json');
+      }
+      const manifest = JSON.parse(zipTextDecoder.decode(manifestBytes));
+      if (
+        manifest.format !== 'htmlflowchart-project' ||
+        Number(manifest.version) !== 1
+      ) {
+        throw new Error('项目包格式或版本不受支持');
+      }
+      const importedWorkspace = JSON.parse(zipTextDecoder.decode(projectBytes));
+      if (!importedWorkspace || !Array.isArray(importedWorkspace.folders)) {
+        throw new Error('project.json 数据结构无效');
+      }
+      for (const asset of manifest.assets || []) {
+        if (!asset?.id || !asset?.path || !entries.has(asset.path)) {
+          throw new Error(`项目包媒体记录不完整：${asset?.name || '未知文件'}`);
+        }
+      }
+      if (!confirm('导入会覆盖当前 HTML 的流程图数据，是否继续？')) return;
+
+      saveCurrentChart();
+      await deleteDocumentMedia();
+      for (const asset of manifest.assets || []) {
+        const bytes = entries.get(asset.path);
+        await putMediaBlob(
+          new Blob([bytes], {
+            type: asset.type || 'application/octet-stream'
+          }),
+          {
+            id: asset.id,
+            name: asset.name,
+            type: asset.type,
+            createdAt: asset.createdAt
+          }
+        );
+      }
+      workspaceData = importedWorkspace;
+      activeFolderId =
+        workspaceData.activeFolderId || workspaceData.folders[0]?.id || null;
+      const importedCharts = workspaceData.folders.flatMap(
+        folder => folder.charts || []
+      );
+      activeChartId = importedCharts.some(
+        chart => chart.id === workspaceData.activeChartId
+      )
+        ? workspaceData.activeChartId
+        : importedCharts[0]?.id || null;
+      persistWorkspace();
+      renderFileTree();
+      const chart = activeChart();
+      if (chart?.state) loadState(chart.state);
+      else loadState({ version: 1, idCounter: 1, nodes: [], edges: [] });
+      resetHistory();
+      registerCurrentDocumentCache();
+      showStatus(`项目包导入成功，共恢复 ${manifest.assets?.length || 0} 个媒体文件`);
+    } catch (error) {
+      console.error(error);
+      showStatus(`项目包导入失败：${error.message || '文件无法读取'}`);
+    } finally {
+      importProjectBtn.disabled = false;
+      importProjectBtn.textContent = '导入项目包';
+      importProjectInput.value = '';
+    }
   }
 
   function canvasTextLines(context, text, maxWidth) {
@@ -4849,6 +5398,13 @@
   document.getElementById('deleteBtn').addEventListener('click', deleteSelected);
   document.getElementById('clearBtn').addEventListener('click', clearAll);
   document.getElementById('saveBtn').addEventListener('click', saveAsPNG);
+  exportPortableBtn.addEventListener('click', exportPortableProject);
+  importProjectBtn.addEventListener('click', () => {
+    importProjectInput.click();
+  });
+  importProjectInput.addEventListener('change', () => {
+    importPortableProject(importProjectInput.files?.[0]);
+  });
   savePdfBtn.addEventListener('click', () => {
     const willOpen = savePdfMenu.hidden;
     savePdfMenu.hidden = !willOpen;
@@ -5184,6 +5740,7 @@
   });
 
   initializeWorkspace();
+  migrateLegacyWorkspaceMedia();
   updateToggleAllButton();
   document.body.classList.remove('app-loading');
 })();
