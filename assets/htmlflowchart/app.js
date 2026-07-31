@@ -5012,8 +5012,14 @@
         let exportedChartCount = 0;
         let exportedPageCount = 0;
         const htmlName = currentHTMLFileName().replace(/\.html?$/i, '');
+        const folderPdfEntries = [];
 
-        for (const folder of folders) {
+        for (
+          let folderIndex = 0;
+          folderIndex < folders.length;
+          folderIndex += 1
+        ) {
+          const folder = folders[folderIndex];
           const folderPages = [];
           let folderChartCount = 0;
           for (const chart of folder.charts || []) {
@@ -5026,10 +5032,15 @@
             folderChartCount += 1;
           }
           if (!folderPages.length) continue;
-          downloadPdfPages(
-            folderPages,
-            `${htmlName}-${folder.name || '未命名文件夹'}`
-          );
+          const folderPdf = buildImagePdf(folderPages);
+          const folderNumber = String(folderIndex + 1).padStart(2, '0');
+          folderPdfEntries.push({
+            name:
+              `${folderNumber}-${safePackageName(
+                folder.name || '未命名文件夹'
+              )}.pdf`,
+            data: new Uint8Array(await folderPdf.arrayBuffer())
+          });
           exportedFolderCount += 1;
           exportedChartCount += folderChartCount;
           exportedPageCount += folderPages.length;
@@ -5039,8 +5050,18 @@
           showStatus('当前 HTML 的文件夹中没有可导出的流程图');
           return;
         }
+        const archive = createZipArchive(folderPdfEntries);
+        const archiveUrl = URL.createObjectURL(archive);
+        const archiveLink = document.createElement('a');
+        const stamp = new Date().toISOString().slice(0, 19)
+          .replace(/[:T]/g, '-');
+        archiveLink.href = archiveUrl;
+        archiveLink.download =
+          `${safePackageName(htmlName)}-分部流程图-${stamp}.zip`;
+        archiveLink.click();
+        setTimeout(() => URL.revokeObjectURL(archiveUrl), 1000);
         showStatus(
-          `已按 ${exportedFolderCount} 个文件夹分别导出 ` +
+          `已打包 ${exportedFolderCount} 个文件夹的 PDF，包含 ` +
           `${exportedChartCount} 个流程图，共 ${exportedPageCount} 页`
         );
         return;
