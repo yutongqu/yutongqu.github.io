@@ -59,15 +59,45 @@
   const DOCUMENT_STORAGE_PATH = window.location.pathname || '/index.html';
   const PATH_WORKSPACE_STORAGE_KEY =
     `${LEGACY_WORKSPACE_STORAGE_KEY}:${encodeURIComponent(DOCUMENT_STORAGE_PATH)}`;
-  const DOCUMENT_STORAGE_ID = document
+  const EMBEDDED_DOCUMENT_STORAGE_ID = document
     .querySelector('meta[name="flowchart-document-id"]')
     ?.content.trim();
+  const REGISTERED_EMBEDDED_DOCUMENT = (() => {
+    if (!EMBEDDED_DOCUMENT_STORAGE_ID) return null;
+    try {
+      const registry = JSON.parse(
+        localStorage.getItem(DOCUMENT_CACHE_REGISTRY_KEY)
+      );
+      return registry?.[EMBEDDED_DOCUMENT_STORAGE_ID] || null;
+    } catch {
+      return null;
+    }
+  })();
+  const IS_COPIED_DOCUMENT = Boolean(
+    EMBEDDED_DOCUMENT_STORAGE_ID &&
+    REGISTERED_EMBEDDED_DOCUMENT?.path &&
+    REGISTERED_EMBEDDED_DOCUMENT.path !== DOCUMENT_STORAGE_PATH
+  );
+  const DOCUMENT_STORAGE_ID = IS_COPIED_DOCUMENT
+    ? `${EMBEDDED_DOCUMENT_STORAGE_ID}-copy-${storagePathHash(
+        DOCUMENT_STORAGE_PATH
+      )}`
+    : EMBEDDED_DOCUMENT_STORAGE_ID;
+  const EMBEDDED_DOCUMENT_WORKSPACE_STORAGE_KEY =
+    EMBEDDED_DOCUMENT_STORAGE_ID
+      ? `${LEGACY_WORKSPACE_STORAGE_KEY}:document:${
+          EMBEDDED_DOCUMENT_STORAGE_ID
+        }`
+      : null;
   const WORKSPACE_STORAGE_KEY = DOCUMENT_STORAGE_ID
     ? `${LEGACY_WORKSPACE_STORAGE_KEY}:document:${DOCUMENT_STORAGE_ID}`
     : PATH_WORKSPACE_STORAGE_KEY;
   const SHOULD_MIGRATE_LEGACY_WORKSPACE =
-    /(?:^|\/)index\.html$/i.test(DOCUMENT_STORAGE_PATH) ||
-    DOCUMENT_STORAGE_PATH.endsWith('/');
+    !IS_COPIED_DOCUMENT &&
+    (
+      /(?:^|\/)index\.html$/i.test(DOCUMENT_STORAGE_PATH) ||
+      DOCUMENT_STORAGE_PATH.endsWith('/')
+    );
   let workspaceData = null;
   let cacheDeletionInProgress = false;
   let activeFolderId = null;
@@ -110,6 +140,22 @@
   const mediaObjectUrls = new Map();
 
   const initialState = window.__FLOW_STATE__ || null;
+
+  function storagePathHash(value) {
+    let hash = 2166136261;
+    for (const character of String(value)) {
+      hash ^= character.charCodeAt(0);
+      hash = Math.imul(hash, 16777619);
+    }
+    return (hash >>> 0).toString(36);
+  }
+
+  if (IS_COPIED_DOCUMENT && DOCUMENT_STORAGE_ID) {
+    const documentIdMeta = document.querySelector(
+      'meta[name="flowchart-document-id"]'
+    );
+    if (documentIdMeta) documentIdMeta.content = DOCUMENT_STORAGE_ID;
+  }
 
   function openMediaDatabase() {
     return new Promise((resolve, reject) => {
@@ -198,14 +244,15 @@
     }
   }
 
-  async function getDocumentMediaRecords() {
+  async function getMediaRecordsByDocumentId(documentId) {
+    if (!documentId) return [];
     const database = await openMediaDatabase();
     try {
       return await new Promise((resolve, reject) => {
         const transaction = database.transaction(MEDIA_STORE_NAME, 'readonly');
         const store = transaction.objectStore(MEDIA_STORE_NAME);
         const index = store.index('documentId');
-        const request = index.getAll(mediaDocumentId());
+        const request = index.getAll(documentId);
         request.addEventListener('success', () => resolve(request.result || []));
         request.addEventListener('error', () => reject(request.error));
       });
@@ -214,8 +261,12 @@
     }
   }
 
-  async function deleteDocumentMedia() {
-    const records = await getDocumentMediaRecords();
+  function getDocumentMediaRecords() {
+    return getMediaRecordsByDocumentId(mediaDocumentId());
+  }
+
+  async function deleteMediaByDocumentId(documentId) {
+    const records = await getMediaRecordsByDocumentId(documentId);
     if (!records.length) return;
     await withMediaStore('readwrite', store => {
       records.forEach(record => store.delete(record.id));
@@ -225,6 +276,10 @@
       if (url) URL.revokeObjectURL(url);
       mediaObjectUrls.delete(record.id);
     }
+  }
+
+  function deleteDocumentMedia() {
+    return deleteMediaByDocumentId(mediaDocumentId());
   }
 
   async function mediaObjectUrl(id) {
@@ -426,13 +481,22 @@
       deleteButton.className = 'cache-record-delete';
       deleteButton.type = 'button';
       deleteButton.textContent = '删除缓存';
-      deleteButton.addEventListener('click', () => {
+      deleteButton.addEventListener('click', async () => {
         const message = record.current
           ? `确定删除“${record.fileName}”的缓存吗？当前页面将重置为空白数据。`
           : `确定删除“${record.fileName}”的缓存吗？此操作无法撤销。`;
         if (!confirm(message)) return;
 
         if (record.current) cacheDeletionInProgress = true;
+        deleteButton.disabled = true;
+        deleteButton.textContent = '正在删除…';
+        if (!record.id.startsWith('旧版记录')) {
+          try {
+            await deleteMediaByDocumentId(record.id);
+          } catch (error) {
+            console.error('IndexedDB 媒体缓存删除失败', error);
+          }
+        }
         localStorage.removeItem(record.key);
         if (!record.id.startsWith('旧版记录')) {
           const registry = readDocumentCacheRegistry();
@@ -2952,6 +3016,24 @@
       let storedWorkspace = localStorage.getItem(WORKSPACE_STORAGE_KEY);
       if (
         storedWorkspace == null &&
+        IS_COPIED_DOCUMENT &&
+        EMBEDDED_DOCUMENT_WORKSPACE_STORAGE_KEY &&
+        EMBEDDED_DOCUMENT_WORKSPACE_STORAGE_KEY !== WORKSPACE_STORAGE_KEY
+      ) {
+        storedWorkspace = localStorage.getItem(
+          EMBEDDED_DOCUMENT_WORKSPACE_STORAGE_KEY
+        );
+        if (storedWorkspace == null) {
+          storedWorkspace = localStorage.getItem(
+            LEGACY_WORKSPACE_STORAGE_KEY
+          );
+        }
+        if (storedWorkspace != null) {
+          localStorage.setItem(WORKSPACE_STORAGE_KEY, storedWorkspace);
+        }
+      }
+      if (
+        storedWorkspace == null &&
         WORKSPACE_STORAGE_KEY !== PATH_WORKSPACE_STORAGE_KEY
       ) {
         storedWorkspace = localStorage.getItem(PATH_WORKSPACE_STORAGE_KEY);
@@ -3059,6 +3141,62 @@
     } catch (error) {
       console.error('旧版媒体迁移失败', error);
       showStatus('部分旧版媒体暂未迁移，原数据仍保留');
+    }
+  }
+
+  async function cloneCopiedDocumentMedia() {
+    if (!IS_COPIED_DOCUMENT || !workspaceData) return;
+    const referencedIds = new Set();
+    for (const folder of workspaceData.folders || []) {
+      for (const chart of folder.charts || []) {
+        for (const node of chart.state?.nodes || []) {
+          const html = node.richContent || '';
+          for (const match of html.matchAll(
+            /data-media-id\s*=\s*["']([^"']+)["']/gi
+          )) {
+            referencedIds.add(match[1]);
+          }
+        }
+      }
+    }
+    if (!referencedIds.size) return;
+
+    const replacements = new Map();
+    for (const id of referencedIds) {
+      const record = await getMediaRecord(id);
+      if (!record?.blob || record.documentId === mediaDocumentId()) continue;
+      const newId = await putMediaBlob(record.blob, {
+        name: record.name,
+        type: record.type,
+        createdAt: record.createdAt
+      });
+      replacements.set(id, newId);
+    }
+    if (!replacements.size) return;
+
+    for (const folder of workspaceData.folders || []) {
+      for (const chart of folder.charts || []) {
+        for (const node of chart.state?.nodes || []) {
+          if (!node.richContent?.includes('data-media-id')) continue;
+          const template = document.createElement('template');
+          template.innerHTML = node.richContent;
+          template.content.querySelectorAll('[data-media-id]').forEach(
+            element => {
+              const replacement = replacements.get(element.dataset.mediaId);
+              if (replacement) element.dataset.mediaId = replacement;
+            }
+          );
+          node.richContent = template.innerHTML;
+        }
+      }
+    }
+    persistWorkspace();
+    const chart = activeChart();
+    if (chart?.state) {
+      isLoadingChart = true;
+      loadState(chart.state);
+      isLoadingChart = false;
+      resetHistory();
     }
   }
 
@@ -5834,7 +5972,11 @@
   });
 
   initializeWorkspace();
-  migrateLegacyWorkspaceMedia();
+  cloneCopiedDocumentMedia()
+    .catch(error => {
+      console.error('复制文件的媒体缓存迁移失败', error);
+    })
+    .finally(migrateLegacyWorkspaceMedia);
   updateToggleAllButton();
   document.body.classList.remove('app-loading');
 })();
