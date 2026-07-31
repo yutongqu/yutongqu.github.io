@@ -20,6 +20,7 @@
   const savePdfMenu = document.getElementById('savePdfMenu');
   const saveCurrentPdfBtn = document.getElementById('saveCurrentPdfBtn');
   const saveAllPdfBtn = document.getElementById('saveAllPdfBtn');
+  const saveFolderPdfsBtn = document.getElementById('saveFolderPdfsBtn');
   const cacheManagerBtn = document.getElementById('cacheManagerBtn');
   const cacheManagerBackdrop = document.getElementById('cacheManagerBackdrop');
   const cacheManagerCloseBtn = document.getElementById('cacheManagerCloseBtn');
@@ -4995,14 +4996,56 @@
     const originalBatchIds = [...batchSelectedIds];
     const originalScrollLeft = viewport.scrollLeft;
     const originalScrollTop = viewport.scrollTop;
-    const allCharts = (workspaceData?.folders || [])
+    const folders = workspaceData?.folders || [];
+    const allCharts = folders
       .flatMap(folder => folder.charts);
     savePdfBtn.disabled = true;
     saveCurrentPdfBtn.disabled = true;
     saveAllPdfBtn.disabled = true;
+    saveFolderPdfsBtn.disabled = true;
     savePdfBtn.textContent = '正在生成…';
 
     try {
+      if (scope === 'folders') {
+        isLoadingChart = true;
+        let exportedFolderCount = 0;
+        let exportedChartCount = 0;
+        let exportedPageCount = 0;
+        const htmlName = currentHTMLFileName().replace(/\.html?$/i, '');
+
+        for (const folder of folders) {
+          const folderPages = [];
+          let folderChartCount = 0;
+          for (const chart of folder.charts || []) {
+            activeChartId = chart.id;
+            if (!loadState(chart.state)) continue;
+            await new Promise(resolve => requestAnimationFrame(resolve));
+            const chartPages = await createLoadedChartPdfPages();
+            if (!chartPages.length) continue;
+            folderPages.push(...chartPages);
+            folderChartCount += 1;
+          }
+          if (!folderPages.length) continue;
+          downloadPdfPages(
+            folderPages,
+            `${htmlName}-${folder.name || '未命名文件夹'}`
+          );
+          exportedFolderCount += 1;
+          exportedChartCount += folderChartCount;
+          exportedPageCount += folderPages.length;
+        }
+
+        if (!exportedFolderCount) {
+          showStatus('当前 HTML 的文件夹中没有可导出的流程图');
+          return;
+        }
+        showStatus(
+          `已按 ${exportedFolderCount} 个文件夹分别导出 ` +
+          `${exportedChartCount} 个流程图，共 ${exportedPageCount} 页`
+        );
+        return;
+      }
+
       let pageCanvases = [];
       let exportedChartCount = 0;
       if (scope === 'all') {
@@ -5041,7 +5084,7 @@
       console.error(error);
       showStatus('PDF 导出失败，请重试');
     } finally {
-      if (scope === 'all') {
+      if (scope !== 'current') {
         activeChartId = originalChartId;
         loadState(originalState);
         if (batchMode) {
@@ -5059,6 +5102,7 @@
       savePdfBtn.disabled = false;
       saveCurrentPdfBtn.disabled = false;
       saveAllPdfBtn.disabled = false;
+      saveFolderPdfsBtn.disabled = false;
       savePdfBtn.textContent = '导出 PDF ▾';
     }
   }
@@ -5441,6 +5485,9 @@
   });
   saveAllPdfBtn.addEventListener('click', () => {
     saveAsPDF('all');
+  });
+  saveFolderPdfsBtn.addEventListener('click', () => {
+    saveAsPDF('folders');
   });
   document.addEventListener('mousedown', event => {
     if (!savePdfControl.contains(event.target)) closePdfExportMenu();
