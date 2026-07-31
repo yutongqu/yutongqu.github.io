@@ -3326,18 +3326,36 @@
     const rect = viewport.getBoundingClientRect();
     const threshold = 56;
     const maxSpeed = 18;
+    const pointerX = batchSelectionDrag.clientX;
     const pointerY = batchSelectionDrag.clientY;
-    let scrollDelta = 0;
+    let scrollDeltaX = 0;
+    let scrollDeltaY = 0;
+
+    if (pointerX < rect.left + threshold) {
+      scrollDeltaX = -Math.ceil(
+        Math.min(
+          1,
+          (rect.left + threshold - pointerX) / threshold
+        ) * maxSpeed
+      );
+    } else if (pointerX > rect.right - threshold) {
+      scrollDeltaX = Math.ceil(
+        Math.min(
+          1,
+          (pointerX - (rect.right - threshold)) / threshold
+        ) * maxSpeed
+      );
+    }
 
     if (pointerY < rect.top + threshold) {
-      scrollDelta = -Math.ceil(
+      scrollDeltaY = -Math.ceil(
         Math.min(
           1,
           (rect.top + threshold - pointerY) / threshold
         ) * maxSpeed
       );
     } else if (pointerY > rect.bottom - threshold) {
-      scrollDelta = Math.ceil(
+      scrollDeltaY = Math.ceil(
         Math.min(
           1,
           (pointerY - (rect.bottom - threshold)) / threshold
@@ -3345,12 +3363,17 @@
       );
     }
 
-    if (!scrollDelta) return;
+    if (!scrollDeltaX && !scrollDeltaY) return;
+    const previousScrollLeft = viewport.scrollLeft;
     const previousScrollTop = viewport.scrollTop;
-    viewport.scrollTop += scrollDelta;
+    viewport.scrollLeft += scrollDeltaX;
+    viewport.scrollTop += scrollDeltaY;
     updateBatchSelectionDrag();
 
-    if (viewport.scrollTop !== previousScrollTop) {
+    if (
+      viewport.scrollLeft !== previousScrollLeft ||
+      viewport.scrollTop !== previousScrollTop
+    ) {
       batchSelectionAutoScrollFrame = requestAnimationFrame(
         runBatchSelectionAutoScroll
       );
@@ -3360,8 +3383,11 @@
   function requestBatchSelectionAutoScroll() {
     if (!batchSelectionDrag || batchSelectionAutoScrollFrame) return;
     const rect = viewport.getBoundingClientRect();
+    const pointerX = batchSelectionDrag.clientX;
     const pointerY = batchSelectionDrag.clientY;
     if (
+      pointerX >= rect.left + 56 &&
+      pointerX <= rect.right - 56 &&
       pointerY >= rect.top + 56 &&
       pointerY <= rect.bottom - 56
     ) return;
