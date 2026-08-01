@@ -734,6 +734,10 @@
     const nodeText = getNodeElement(node.id)?.querySelector('.node-text');
     if (nodeText) {
       nodeText.innerHTML = html;
+      nodeText.classList.toggle(
+        'has-code-block',
+        Boolean(nodeText.querySelector('pre'))
+      );
       hydrateMediaInElement(nodeText);
     }
     updateNodeSearchHighlights();
@@ -1468,10 +1472,18 @@
     text.innerHTML = sanitizeRichHTML(
       node.richContent ?? plainTextToRichHTML(node.text)
     );
+    text.classList.toggle(
+      'has-code-block',
+      Boolean(text.querySelector('pre'))
+    );
     hydrateMediaInElement(text);
     bindEditable(text, () => {
       node.richContent = sanitizeRichHTML(text.innerHTML);
       node.text = text.innerText;
+      text.classList.toggle(
+        'has-code-block',
+        Boolean(text.querySelector('pre'))
+      );
     });
 
     const bodySection = document.createElement('div');

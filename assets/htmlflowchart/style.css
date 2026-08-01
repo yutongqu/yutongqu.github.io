@@ -1461,6 +1461,30 @@ button.active:hover {
   background-clip: padding-box;
 }
 
+.node-text.has-code-block {
+  width: 100%;
+}
+
+.node-text pre {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: visible;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  tab-size: 2;
+}
+
+.node-text pre > code {
+  display: block;
+  max-width: 100%;
+  white-space: inherit;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .node-text:hover,
 .node-text:focus {
   background: #fafbfc;
